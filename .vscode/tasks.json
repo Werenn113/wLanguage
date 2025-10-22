@@ -1,0 +1,25 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build and run",
+      "type": "shell",
+      "command": "mkdir -p build && for f in $(find src -name '*.asm'); do nasm -f elf64 \"$f\" -o \"build/$(basename ${f%.asm}.o)\"; done && ld build/*.o -o build/main && ./build/main",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": [],
+      "presentation": {
+        "echo": false,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "debug",
+      "type": "shell",
+      "command": "mkdir -p build && for f in $(find src -name '*.asm'); do nasm -f elf64 -g \"$f\" -o \"build/$(basename ${f%.asm}.o)\"; done && ld build/*.o -o build/main && gnome-terminal --full-screen -- bash -c 'gdb -ex \"set disassembly-flavor intel\" -ex \"layout asm\" -ex \"layout regs\" build/main; exec bash'",
+      "problemMatcher": []
+    }
+  ]
+}
