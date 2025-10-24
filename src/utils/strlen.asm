@@ -7,9 +7,11 @@ strlen:
 ; Calcule la longueur d'un str terminé par un nullbyte
 ; rdi - la str
 ; return - la longueur
+    push rdi
+
     xor rax, rax
     .strlen_loop:
-        cmp [rdi], byte 0
+        cmp byte [rdi], 0
         je .strlen_end
 
         inc rax
@@ -17,4 +19,5 @@ strlen:
         jmp .strlen_loop
 
     .strlen_end:
+        pop rdi
         ret

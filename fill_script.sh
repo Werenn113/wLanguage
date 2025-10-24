@@ -1,15 +1,25 @@
 #!/bin/bash
 
-# Nom du fichier de sortie
-fichier="script.txt"
+# Paramètres
+OUTPUT_FILE="script.txt"
+NUM_LINES=100  # Nombre de lignes à générer
 
-nb_lignes=100
+# Supprimer le fichier s'il existe déjà
+> "$OUTPUT_FILE"
 
-for i in $(seq 1 $nb_lignes); do
-    # Convertir le numéro en chaîne
-    num="$i"
-    # Calculer le reste pour atteindre 127 octets (128 - 1 pour le saut de ligne)
-    reste=$((128 - ${#num} - 1))
-    # Créer la ligne complète avec des tirets et ajouter le saut de ligne
-    printf "%s%s\n" "$num" "$(printf '%*s' "$reste" | tr ' ' 'A')" >> "$fichier"
+for i in $(seq 1 $NUM_LINES); do
+    # Créer le numéro de ligne avec padding
+    line_num=$(printf "%06d" $i)
+    
+    # Calculer combien d'octets il reste à remplir (128 - longueur du numéro - 2 pour ": " - 1 pour le newline)
+    # 128 octets au total incluant le \n
+    remaining=$((128 - ${#line_num} - 2 - 1))
+    
+    # Générer la ligne avec des 'X' pour remplir
+    padding=$(printf '%*s' $remaining | tr ' ' 'X')
+    
+    # Écrire la ligne (le \n compte comme 1 octet)
+    printf "%s: %s\n" "$line_num" "$padding" >> "$OUTPUT_FILE"
 done
+
+echo "Fichier $OUTPUT_FILE créé avec $NUM_LINES lignes de 128 octets chacune"

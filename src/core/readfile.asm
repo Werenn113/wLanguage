@@ -16,6 +16,9 @@ open_file:
 ; Ouvre le fichier
 ; rdi - pathname
 ; return - le filedescriptor
+    push rdi
+    push rsi
+
     mov rax, 2
     ; mov rdi, rdi inutile car rdi déjà bien défini
     mov rsi, 0 ; read-only
@@ -23,6 +26,9 @@ open_file:
 
     cmp rax, 0
     jl .open_file_error
+
+    pop rsi
+    pop rdi
     ret
 
     .open_file_error:
@@ -35,6 +41,10 @@ read_part_of_file:
 ; rdi - file descriptor qui contient le fichier (0 = stdin, 1 = stdout, 2 = stderr, 3... nos fichiers)
 ; rsi - le buffer
 ; return - le nombre d'octet lu
+    push rdi
+    push rsi
+    push rdx
+
     mov rax, 0
     ;mov rdi, rdi inutile
     ;mov rsi, rsi
@@ -44,6 +54,9 @@ read_part_of_file:
     cmp rax, 0
     jl .read_octets_error
 
+    pop rdx
+    pop rsi
+    pop rdi
     ret
 
     .read_octets_error:
@@ -55,8 +68,12 @@ close_file:
 ; Ferme le fichier
 ; rdi - le fd du fichier
 ; return - void
+    push rdi
+
     mov rax, 3
     mov rdi, 3
     ;mov rdi, rdi
     syscall
+
+    pop rdi
     ret

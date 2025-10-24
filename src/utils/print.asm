@@ -9,6 +9,10 @@ print:
 ; rdi - la str
 ; return - void
     push rdi
+    push rsi
+    push rdx
+
+    push rdi
     call strlen
     mov rdx, rax
 
@@ -18,4 +22,7 @@ print:
     mov rdi, 1
     syscall
 
+    pop rdx
+    pop rsi
+    pop rsi
     ret
