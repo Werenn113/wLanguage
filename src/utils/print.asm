@@ -8,6 +8,9 @@ print:
 ; Affiche une str
 ; rdi - la str
 ; return - void
+    push rbp
+    mov rbp, rsp
+
     push rdi
     push rsi
     push rdx
@@ -25,4 +28,7 @@ print:
     pop rdx
     pop rsi
     pop rsi
+
+    mov rsp, rbp
+    pop rbp
     ret

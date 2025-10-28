@@ -1,7 +1,7 @@
 bits 64
 
 section .data
-    pathname db "/home/werenn/Documents/Code/wLanguage/script.txt", 0
+    pathname db "/home/werenn/code/assembleur/wLanguage/script.txt", 0
     space db ' '
     return db 10
 

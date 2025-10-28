@@ -7,6 +7,9 @@ add_variable_name:
 ; rdi - le nom
 ; rsi - l'adresse ou placer le nom
 ; return - void
+    push rbp
+    mov rbp, rsp
+
     push rdi
     push rsi
 
@@ -22,4 +25,7 @@ add_variable_name:
     .add_name_end:
         pop rsi
         pop rdi
+
+        mov rsp, rbp
+        pop rbp
         ret

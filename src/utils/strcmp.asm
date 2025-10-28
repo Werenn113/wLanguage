@@ -8,6 +8,9 @@ strcmp:
 ; rdi - la 1ere
 ; rsi - la 2eme
 ; return - 1 si egales, 0 sinon
+    push rbp
+    mov rbp, rsp
+
     push rcx
     push rdi
     push rsi
@@ -54,4 +57,7 @@ strcmp:
         pop rsi
         pop rdi
         pop rcx
+
+        mov rsp, rbp
+        pop rbp
         ret

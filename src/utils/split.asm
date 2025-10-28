@@ -8,10 +8,12 @@ split:
 ; rsi - le supérateur
 ; rdx - le tableau
 ; return - le nombre d'éléments après séparation
+    push rbp
+    mov rbp, rsp
+
     push rcx
     push rdi
     push rsi
-    push rdx
     push r8
     push r9
     push r10
@@ -32,35 +34,33 @@ split:
         jmp .split_loop
 
     .split_sep_find:
-        neg rcx
-        lea r10, [rdi + rcx]
-        mov [rdx + r8], r10
         mov [rdi], byte 0
+        neg rcx
+        lea r8, [rdi+rcx]
+        mov [rdx+rax*8], r8
 
-        inc rdi
-        add rdx, 8
         xor rcx, rcx
-
+        inc rdi
         inc rax
         jmp .split_loop
 
     .split_loop_end:
-        neg rcx
-        lea r10, [rdi + rcx]
-        mov [rdx + r8], r10
         mov [rdi], byte 0
+        neg rcx
+        lea r8, [rdi+rcx]
+        mov [rdx+rax*8], r8
 
-        inc rdi
-        add rdx, 8
         xor rcx, rcx
-
+        inc rdi
         inc rax
-
+   
         pop r10
         pop r9
         pop r8
-        pop rdx
         pop rsi
         pop rdi
         pop rcx
+
+        mov rsp, rbp
+        pop rbp
         ret

@@ -14,6 +14,9 @@ print_variables:
 ; rsi - le nombre de variables
 ; rdx - varsize
 ; return void
+    push rbp
+    mov rbp, rsp
+
     push rcx
     push rdi
     push rsi
@@ -61,4 +64,7 @@ print_variables:
         pop rsi
         pop rdi
         pop rcx
+
+        mov rsp, rbp
+        pop rbp
         ret

@@ -16,6 +16,9 @@ add_variable:
 ; r8  - le compteur de variables
 ; r9  - la taille des variables
 ; return - void
+    push rbp
+    mov rbp, rsp
+
     push rcx
     push rdi
     push rsi
@@ -58,6 +61,9 @@ add_variable:
     pop rsi
     pop rdi
     pop rcx
+
+    mov rsp, rbp
+    pop rbp
     ret
 
     .add_variable_error:

@@ -16,6 +16,9 @@ open_file:
 ; Ouvre le fichier
 ; rdi - pathname
 ; return - le filedescriptor
+    push rbp
+    mov rbp, rsp
+
     push rdi
     push rsi
 
@@ -29,6 +32,9 @@ open_file:
 
     pop rsi
     pop rdi
+
+    mov rsp, rbp
+    pop rbp
     ret
 
     .open_file_error:
@@ -41,6 +47,9 @@ read_part_of_file:
 ; rdi - file descriptor qui contient le fichier (0 = stdin, 1 = stdout, 2 = stderr, 3... nos fichiers)
 ; rsi - le buffer
 ; return - le nombre d'octet lu
+    push rbp
+    mov rbp, rsp
+
     push rdi
     push rsi
     push rdx
@@ -57,6 +66,9 @@ read_part_of_file:
     pop rdx
     pop rsi
     pop rdi
+
+    mov rsp, rbp
+    pop rbp
     ret
 
     .read_octets_error:
@@ -68,6 +80,9 @@ close_file:
 ; Ferme le fichier
 ; rdi - le fd du fichier
 ; return - void
+    push rbp
+    mov rbp, rsp
+
     push rdi
 
     mov rax, 3
@@ -76,4 +91,7 @@ close_file:
     syscall
 
     pop rdi
+
+    mov rsp, rbp
+    pop rbp
     ret
