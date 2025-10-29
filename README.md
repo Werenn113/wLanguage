@@ -1,3 +1,3 @@
 # wLanguage
 
-Un language de programmation interprété basic fait en NASM x86-64 (il ne fait appel à aucune library)
+Un langage de programmation interprété basique écrit en assembleur NASM x86-64 (sans dépendance à aucune bibliothèque)
