@@ -1,5 +1,7 @@
-set A 2
+set A 5
 set B 3
 print A
 print B
-add A B
+rem A B
+print A
+print B

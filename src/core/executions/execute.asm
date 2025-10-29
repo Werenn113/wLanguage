@@ -6,10 +6,18 @@ section .data
     set_str db "set", 0
     print_str db "print", 0
     add_str db "add", 0
+    sub_str db "sub", 0
+    mul_str db "mul", 0
+    div_str db "div", 0
+    rem_str db "rem", 0
     cmds:
-        dq set_str, set
-        dq print_str, print
-        dq add_str, addition
+        dq set_str, instruction_set
+        dq print_str, instruction_print
+        dq add_str, instruction_operation
+        dq sub_str, instruction_operation
+        dq mul_str, instruction_operation
+        dq div_str, instruction_operation
+        dq rem_str, instruction_operation
         dq 0, 0 
 
 
@@ -20,12 +28,12 @@ section .bss
 
 section .text
     global execute
-    
-    extern add_variable
-    extern print_variables
+
     extern strcmp
-    extern print_a_variable
-    extern get_value
+
+    extern instruction_set
+    extern instruction_print
+    extern instruction_operation
 
 
 execute:
@@ -40,7 +48,7 @@ execute:
     push rsi
     push rdx
 
-    mov rcx, rdi
+    mov rdx, rdi
     lea rcx, [cmds]
     .execute_loop:
         mov rax, [rcx]
@@ -57,8 +65,11 @@ execute:
         jmp .execute_loop
     
     .call_func:
-        mov rdi, rdx ; on récupère la ligne de code
         mov rax, [rcx + 8]
+        mov rdi, rdx ; on récupère la ligne de code
+        mov rsi, variables
+        mov rdx, variables_count
+        mov r8, VAR_SIZE
         call rax
         jmp .execute_loop_end
     
@@ -71,100 +82,3 @@ execute:
         mov rsp, rbp
         pop rbp
         ret
-
-
-set:
-; Fait appel à la fonction pour ajouter une variables
-; rdi - la ligne de code
-; return - void
-    push rbp
-    mov rbp, rsp
-
-    push rdi
-    push rsi
-    push rdx
-    push r8
-    push r9
-
-    xor rax, rax
-    mov al, [variables_count]
-    cmp al, 0
-    jne .already_initialized
-    mov [variables_count], al
-
-    .already_initialized:
-
-    mov rdx, variables
-    mov r8, variables_count
-    mov r9, VAR_SIZE
-    mov rsi, [rdi + 16]
-    mov rdi, [rdi + 8]
-    call add_variable
-
-    pop r9
-    pop r8
-    pop rdx
-    pop rsi
-    pop rdi
-
-    mov rsp, rbp
-    pop rbp
-    ret
-
-
-print:
-; Fait appel à la fonction qui permet d'afficher une variable
-; rdi - la ligne de code
-; return - void
-    push rbp
-    mov rbp, rsp
-
-    push rdi
-    push rsi
-    push rdx
-    push r8
-
-    mov rdi, [rdi+8]
-    mov rsi, variables
-    mov rdx, variables_count
-    mov r8, VAR_SIZE
-    call print_a_variable
-
-    pop r8
-    pop rdx
-    pop rsi
-    pop rdi
-
-    mov rsp, rbp
-    pop rbp
-    ret
-
-
-addition:
-; Fait appel à la fonction pour faire une addition
-; rdi - la ligne de code
-; return - void
-    push rbp
-    mov rbp, rsp
-
-    push rdi
-
-    mov rdi, [rdi + 8]
-    mov rsi, variables
-    mov rdx, variables_count
-    mov r8, VAR_SIZE
-    call get_value
-
-    pop rdi
-    
-    mov dl, [rax]
-
-    mov rdi, [rdi + 16]
-    call get_value
-
-
-    add rax, r8
-
-    mov rsp, rbp
-    pop rbp
-    ret
